@@ -2703,6 +2703,7 @@ class RoomSelector(QWidget):
             "weight": {"min": 0, "max": 100000, "useRange": False, "enabled": False},
             "difficulty": {"min": 1, "max": 20, "useRange": False, "enabled": False},
             "subtype": {"min": 0, "max": 10, "useRange": False, "enabled": False},
+            "notAllDoorsEnabled": False,
             "lastTestTime": {
                 "min": None,
                 "max": None,
@@ -4329,6 +4330,9 @@ class FilterDialog(QDialog):
         self.subtypeEntry = FilterDialog.FilterEntry(roomList, "SubType", "subtype")
         self.layout.addWidget(self.subtypeEntry)
 
+        self.notAllDoorsEnabledEntry = QCheckBox("Not all doors enabled")
+        self.layout.addWidget(self.notAllDoorsEnabledEntry)
+
         ltt = roomList.filter.extraData["lastTestTime"]
         if not ltt["min"]:
             ltt["min"] = datetime.datetime.now(datetime.timezone.utc)
@@ -5460,7 +5464,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.warning(
                     self, "Error", f"Stage Replacement not supported for {version}!"
                 )
-                raise
+                raise  # type: ignore
 
             basePath = floorInfo.get("BaseGamePath")
             if basePath is None:
@@ -5469,7 +5473,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "Custom stages cannot be tested with Stage Replacement, since they don't have a room file to replace.",
                 )
-                raise
+                raise  # type: ignore
 
             if floorInfo.get("Name") == "Blue Womb":
                 QMessageBox.warning(
@@ -5477,7 +5481,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "Blue Womb cannot be tested with Stage Replacement, since it doesn't have normal room generation.",
                 )
-                raise
+                raise  # type: ignore
 
             # Set the selected rooms to max weight, best spawn difficulty, default type, and enable all the doors
             newRooms = list(
@@ -5533,7 +5537,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "Cannot test multiple rooms with Starting Room Replacement!",
                 )
-                raise
+                raise  # type: ignore
             testRoom = testRoom[0]
 
             if version not in ["Afterbirth+", "Repentance"]:
@@ -5542,7 +5546,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     f"Starting Room Replacement not supported for {version}!",
                 )
-                raise
+                raise  # type: ignore
 
             # Sanity check for 1x1 room
             if testRoom.info.shape in [2, 7, 9]:
@@ -5551,7 +5555,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "Room shapes 2 and 7 (Long and narrow) and 9 (L shaped with upper right corner missing) can't be tested as the Start Room.",
                 )
-                raise
+                raise  # type: ignore
 
             resourcePath = self.findResourcePath()
             if resourcePath == "":
@@ -5560,7 +5564,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "The resources folder could not be found. Please try reselecting it.",
                 )
-                raise
+                raise  # type: ignore
 
             roomPath = os.path.join(resourcePath, "rooms", "00.special rooms.stb")
 
@@ -5571,7 +5575,7 @@ class MainWindow(QMainWindow):
                     "Error",
                     "Missing 00.special rooms.stb from resources. Please unpack your resource files.",
                 )
-                raise
+                raise  # type: ignore
 
             startRoom = None
             roomFile = self.open(roomPath, False)
@@ -5586,7 +5590,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.warning(
                     self, "Error", "00.special rooms.stb is not a valid STB file."
                 )
-                raise
+                raise  # type: ignore
 
             path = os.path.join(roomsPath, "00.special rooms.stb")
 
@@ -5620,7 +5624,7 @@ class MainWindow(QMainWindow):
                     QMessageBox.warning(
                         self, "Error", f"{version} does not support the null room type."
                     )
-                    raise
+                    raise  # type: ignore
 
                 baseSpecialPath = "00.special rooms"
                 extraInfo = xmlLookups.stages.lookup(
