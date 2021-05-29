@@ -13,7 +13,7 @@ on:
 jobs:
   pyinstaller_win:
     runs-on: windows-latest
-    if: ${{ github.event.workflow_run.repository.url == 'https://api.github.com/repos/jerbmega/Basement-Renovator' }}
+    if: ${{ github.event.workflow_run.repository.url == 'https://api.github.com/repos/jerbmega/Basement-Raenovator' }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
