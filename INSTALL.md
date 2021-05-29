@@ -53,3 +53,5 @@ This section has installation instructions for only installing what is explicitl
 - Double-click the `BR.bat` file in the root of the install folder.
   - This will print your Python version, run `pip` to install BR's dependencies, and and then run "BasementRenovator.py".
   - After the program is closed or crashes, the console window will remain open so that you can read the error logs.
+
+POOPING
