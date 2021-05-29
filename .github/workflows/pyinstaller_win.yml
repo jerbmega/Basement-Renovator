@@ -10,7 +10,7 @@ on:
 jobs:
   pyinstaller_win:
     runs-on: windows-latest
-    if: !${{ github.event.issue.pull_request }}
+    if: ${{ !github.event.issue.pull_request }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
