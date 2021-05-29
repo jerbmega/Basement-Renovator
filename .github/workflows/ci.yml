@@ -35,6 +35,7 @@ jobs:
         with:
           args: ./src/*.py --check
 
+
       #- name: Run PyLint
       #  run: ./lint.sh
 
@@ -54,3 +55,16 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ env.WORKFLOW_CONCLUSION }}
           title: ""
+          
+  pyinstaller_trigger:
+    name: Trigger a Windows build
+    needs: [build_lint_deploy]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+        - uses: peter-evans/repository-dispatch@v1
+          with:
+            token: ${{ secrets.REPO_ACCESS_TOKEN }}
+            repository: jerbmega/Basement-Renovator
+            event-type: build-release
+            client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
